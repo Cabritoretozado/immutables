@@ -18,7 +18,6 @@ package org.immutables.value.processor.meta;
 import com.google.common.base.Predicate;
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.Nullable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -157,24 +156,19 @@ final class ValueAttributeFunctions {
     return new UniqueOnAttributeBuilderDescriptor();
   }
 
+  /**
+   * Attribute builder helpers are emitted once per value type and named after it, so the
+   * uniqueness key has to be the value type name. Keying on the whole descriptor lets two
+   * attributes that reach one value type by different routes - one declared with the abstract
+   * type, one with the generated immutable type - each emit a helper under the same name.
+   */
   private static class UniqueOnAttributeBuilderDescriptor implements Predicate<ValueAttribute> {
-    Set<AttributeBuilderDescriptor> uniqueSet;
+    private final Set<String> uniqueSet = new HashSet<>();
 
-    public UniqueOnAttributeBuilderDescriptor() {
-      uniqueSet = new HashSet<>();
-    }
-
-    @Nullable
     @Override
     public boolean apply(ValueAttribute valueAttribute) {
-
-      if (uniqueSet.contains(checkNotNull(valueAttribute.getAttributeBuilderDescriptor()))) {
-        return false;
-      }
-
-      uniqueSet.add(valueAttribute.getAttributeBuilderDescriptor());
-
-      return true;
+      return uniqueSet.add(checkNotNull(valueAttribute.getAttributeBuilderDescriptor())
+          .getQualifiedValueTypeName());
     }
 
     @Override
