@@ -2,7 +2,6 @@ package org.immutables.fixture.builder;
 
 import org.immutables.value.Value;
 
-@Value.Style(attributeBuilderDetection = true)
 public interface DerivedAttributeBuilderParent {
 
   @Value.Immutable
