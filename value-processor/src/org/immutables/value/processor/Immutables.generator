@@ -4953,8 +4953,8 @@ private static java.util.List<[v.getAttributeBuilderDescriptor.getQualifiedBuild
 [/if]
 [/template]
 
-[template convertToBuilderType AttributeBuilder n][n.attributeName]ToBuilder[/template]
-[template convertToValueType AttributeBuilder n][n.attributeName]ValueOf[/template]
+[template convertToBuilderType AttributeBuilder n][n.getQualifiedValueTypeNameWithUnderscores]ToBuilder[/template]
+[template convertToValueType AttributeBuilder n][n.getQualifiedValueTypeNameWithUnderscores]ValueOf[/template]
 
 [template copyBuilderListBody Attribute v Boolean toValueType Boolean vargs String listToTransform]
 [let listType][if toValueType][if v.hasAttributeValue][v.attributeValueType.typeValue][else][v.getAttributeBuilderDescriptor.getQualifiedValueTypeName][/if][else][v.getAttributeBuilderDescriptor.getQualifiedBuilderTypeName][/if][/let]
